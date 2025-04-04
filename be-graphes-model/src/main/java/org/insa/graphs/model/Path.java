@@ -1,5 +1,6 @@
 package org.insa.graphs.model;
 
+import java.lang.classfile.instruction.ThrowInstruction;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,8 +31,36 @@ public class Path {
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        return new Path(graph, arcs);
+
+        // La liste des nodes est-elle valide ?
+        for (int i = 0; i < nodes.size(); i++) {
+            if (graph.getNodes().get(i).hasSuccessors()) {
+                for (int j = 0; j < graph.getNodes().get(i).getNumberOfSuccessors(); j++) {
+                    if (!graph.getNodes().contains(nodes.get(i).getSuccessors().get(j))) {
+                        throw new IllegalArgumentException("Il existe un noeud qui n'est pas dans le graphe !");
+                    }
+                }
+            }
+        }
+
+        for (Node node : nodes) {
+            float cout = -1;
+            Arc shortestArc = null;
+
+            // Si il y a qu'un seul successeur le chemin est forcémenet le plus rapide ^^
+            if (node.getNumberOfSuccessors() == 1) {
+                shortestArc = node.getSuccessors().get(0);
+            } // Il y a plusieurs arcs
+            else {
+                for (Arc arcsIterations : node.getSuccessors()) {
+                    if (cout == -1 || arcsIterations.getMinimumTravelTime() < cout) {
+                        shortestArc = arcsIterations;
+                        cout = arcsIterations.getLength();
+                    }
+                }
+            }
+            arcs.add(shortestArc);
+        }
     }
 
     /**
@@ -42,13 +71,42 @@ public class Path {
      * @param nodes List of nodes to build the path.
      * @return A path that goes through the given list of nodes.
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e.
-     * two consecutive nodes in the list are not connected in the graph.
+     * --> V two consecutive nodes in the list are not connected in the graph.
      * @deprecated Need to be implemented.
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+
+        // La liste des nodes est-elle valide ?
+        for (int i = 0; i < nodes.size(); i++) {
+            if (graph.getNodes().get(i).hasSuccessors()) {
+                for (int j = 0; j < graph.getNodes().get(i).getNumberOfSuccessors(); j++) {
+                    if (!graph.getNodes().contains(nodes.get(i).getSuccessors().get(j))) {
+                        throw new IllegalArgumentException("Il existe un noeud qui n'est pas dans le graphe !");
+                    }
+                }
+            }
+        }
+
+        for (Node node : nodes) {
+            float cout = -1;
+            Arc shortestArc = null;
+
+            // Si il y a qu'un seul successeur le chemin est forcémenet le plus rapide ^^
+            if (node.getNumberOfSuccessors() == 1) {
+                shortestArc = node.getSuccessors().get(0);
+            } // Il y a plusieurs arcs
+            else {
+                for (Arc arcsIterations : node.getSuccessors()) {
+                    if (cout == -1 || arcsIterations.getLength() < cout) {
+                        shortestArc = arcsIterations;
+                        cout = arcsIterations.getLength();
+                    }
+                }
+            }
+            arcs.add(shortestArc);
+        }
         return new Path(graph, arcs);
     }
 
@@ -187,7 +245,7 @@ public class Path {
      * </ul>
      *
      * @return true if the path is valid, false otherwise.
-     * @deprecated Need to be implemented.
+     *
      */
     public boolean isValid() {
         // Valide si le chemin est vide
@@ -210,9 +268,7 @@ public class Path {
                 }
             }
             return true;
-
         }
-        // test 
         return false;
     }
 
