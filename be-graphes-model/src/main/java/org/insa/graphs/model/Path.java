@@ -9,22 +9,22 @@ import java.util.List;
  * Class representing a path between nodes in a graph.
  * </p>
  * <p>
- * A path is represented as a list of {@link Arc} with an origin and not a list of
- * {@link Node} due to the multi-graph nature (multiple arcs between two nodes) of the
- * considered graphs.
+ * A path is represented as a list of {@link Arc} with an origin and not a list
+ * of {@link Node} due to the multi-graph nature (multiple arcs between two
+ * nodes) of the considered graphs.
  * </p>
  */
 public class Path {
 
     /**
-     * Create a new path that goes through the given list of nodes (in order), choosing
-     * the fastest route if multiple are available.
+     * Create a new path that goes through the given list of nodes (in order),
+     * choosing the fastest route if multiple are available.
      *
      * @param graph Graph containing the nodes in the list.
      * @param nodes List of nodes to build the path.
      * @return A path that goes through the given list of nodes.
-     * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
-     *         consecutive nodes in the list are not connected in the graph.
+     * @throws IllegalArgumentException If the list of nodes is not valid, i.e.
+     * two consecutive nodes in the list are not connected in the graph.
      * @deprecated Need to be implemented.
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
@@ -35,14 +35,14 @@ public class Path {
     }
 
     /**
-     * Create a new path that goes through the given list of nodes (in order), choosing
-     * the shortest route if multiple are available.
+     * Create a new path that goes through the given list of nodes (in order),
+     * choosing the shortest route if multiple are available.
      *
      * @param graph Graph containing the nodes in the list.
      * @param nodes List of nodes to build the path.
      * @return A path that goes through the given list of nodes.
-     * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
-     *         consecutive nodes in the list are not connected in the graph.
+     * @throws IllegalArgumentException If the list of nodes is not valid, i.e.
+     * two consecutive nodes in the list are not connected in the graph.
      * @deprecated Need to be implemented.
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
@@ -57,8 +57,9 @@ public class Path {
      *
      * @param paths Array of paths to concatenate.
      * @return Concatenated path.
-     * @throws IllegalArgumentException if the paths cannot be concatenated (IDs of map
-     *         do not match, or the end of a path is not the beginning of the next).
+     * @throws IllegalArgumentException if the paths cannot be concatenated (IDs
+     * of map do not match, or the end of a path is not the beginning of the
+     * next).
      */
     public static Path concatenate(Path... paths) throws IllegalArgumentException {
         if (paths.length == 0) {
@@ -175,19 +176,43 @@ public class Path {
     }
 
     /**
-     * Check if this path is valid. A path is valid if any of the following is true:
+     * Check if this path is valid. A path is valid if any of the following is
+     * true:
      * <ul>
      * <li>it is empty;</li>
      * <li>it contains a single node (without arcs);</li>
-     * <li>the first arc has for origin the origin of the path and, for two consecutive
-     * arcs, the destination of the first one is the origin of the second one.</li>
+     * <li>the first arc has for origin the origin of the path and, for two
+     * consecutive arcs, the destination of the first one is the origin of the
+     * second one.</li>
      * </ul>
      *
      * @return true if the path is valid, false otherwise.
      * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
+        // Valide si le chemin est vide
+        if (isEmpty()) {
+            return true;
+        }
+
+        // Valide si il y a qu'un seule noeud et pas d'arc
+        if (getArcs().isEmpty() && getGraph().getNodes().size() == 1) {
+            return true;
+        }
+
+        // Le premier arc a pour origin, l'origine de chemin, et pour deux arcs du graphe, la dest de l'un et l'origine du suivant
+        // La liste d'arc est forcement non vide car on a déjà vérifier
+        if (getArcs().getFirst().getOrigin() == getOrigin()) {
+            // Le -1 permet de ne pas vérifier le dernier noeud (sinon complicado)
+            for (int i = 0; i < getArcs().size() - 1; i++) {
+                if (getArcs().get(i).getOrigin() != getArcs().get(i + 1).getDestination()) {
+                    return false;
+                }
+            }
+            return true;
+
+        }
+
         return false;
     }
 
@@ -203,11 +228,12 @@ public class Path {
     }
 
     /**
-     * Compute the time required to travel this path if moving at the given speed.
+     * Compute the time required to travel this path if moving at the given
+     * speed.
      *
      * @param speed Speed to compute the travel time.
-     * @return Time (in seconds) required to travel this path at the given speed (in
-     *         kilometers-per-hour).
+     * @return Time (in seconds) required to travel this path at the given speed
+     * (in kilometers-per-hour).
      * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
@@ -216,8 +242,8 @@ public class Path {
     }
 
     /**
-     * Compute the time to travel this path if moving at the maximum allowed speed on
-     * every arc.
+     * Compute the time to travel this path if moving at the maximum allowed
+     * speed on every arc.
      *
      * @return Minimum travel time to travel this path (in seconds).
      * @deprecated Need to be implemented.
