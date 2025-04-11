@@ -17,6 +17,7 @@ import java.util.List;
  * </p>
  */
 public final class Node {
+
     /**
      * <p>
      * Link the two given nodes with one or two arcs (depending on roadInformation),
@@ -77,6 +78,7 @@ public final class Node {
      * @param id ID of the node.
      * @param point Position of the node.
      */
+    @SuppressWarnings("Convert2Diamond")
     public Node(int id, Point point) {
         this.id = id;
         this.point = point;

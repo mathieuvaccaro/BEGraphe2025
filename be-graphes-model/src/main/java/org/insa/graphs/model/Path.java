@@ -28,34 +28,47 @@ public class Path {
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
-        List<Arc> arcs = new ArrayList<Arc>();
+        // Si la liste de nœuds est vide ou contient un seul nœud, retourner un chemin
+        // vide ou un chemin avec un seul nœud
+        if (nodes.isEmpty()) {
+            return new Path(graph);
+        }
+        if (nodes.size() == 1) {
+            return new Path(graph, nodes.get(0));
+        }
 
-        double fastestValue = -1;
-        Arc fastestArc = new ArcForward(null, null, 0, null, null);
-        // List valide, 2 à 2 ils sont connecté
-        // Il faut regarder le chemin le plus rapide
-        for (int i = 0; i < nodes.size() - 1; i++) // Attention, a bien emttre -1 pour
-                                                   // ne pas regarder le dernier élement
-                                                   // du graphe + le vide
-        {
-            if (graph.get(i).getSuccessors().get(i).getDestination() != graph
-                    .get(i + 1)) {
-                throw new IllegalAccessError(
-                        "Le noeud : " + (i + 1) + " est invalide.");
-            }
+        List<Arc> arcs = new ArrayList<>();
+        Arc fastestArc = null;
+        double fastestValue = Double.MAX_VALUE;
 
-            // On commence l'algo
-            for (int j = 0; j < graph.get(i).getNumberOfSuccessors(); j++) {
-                if (fastestValue == -1 || graph.get(i).getSuccessors().get(j)
-                        .getMinimumTravelTime() < fastestValue) {
-                    fastestValue =
-                            graph.get(i).getSuccessors().get(j).getMinimumTravelTime();
-                    fastestArc = graph.get(i).getSuccessors().get(j);
+        // Parcourir les nœuds pour trouver les arcs les plus courts
+        for (int i = 0; i < nodes.size() - 1; i++) {
+
+            // Parcourir les successeurs du nœud actuel
+            for (Arc arc : nodes.get(i).getSuccessors()) {
+                if (arc.getDestination().equals(nodes.get(i + 1))) {
+                    // Vérifier si cet arc est plus court que le précédent
+                    if (arc.getMinimumTravelTime() < fastestValue) {
+                        fastestValue = arc.getLength();
+                        fastestArc = arc;
+                    }
                 }
             }
+
+            // Si aucun arc valide n'a été trouvé, lever une exception
+            if (fastestArc == null) {
+                throw new IllegalArgumentException(
+                        "Aucun arc valide trouvé entre les nœuds " + nodes.get(i)
+                                + " et " + nodes.get(i + 1) + ".");
+            }
+
+            // Ajouter l'arc le plus court à la liste des arcs
             arcs.add(fastestArc);
-            fastestValue = -1;
+            fastestArc = null;
+            fastestValue = Double.MAX_VALUE;
         }
+
+        // Retourner le chemin construit
         return new Path(graph, arcs);
     }
 
@@ -74,7 +87,7 @@ public class Path {
             throws IllegalArgumentException {
         // Si la liste de nœuds est vide ou contient un seul nœud, retourner un chemin
         // vide ou un chemin avec un seul nœud
-        if (nodes.size() == 0) {
+        if (nodes.isEmpty()) {
             return new Path(graph);
         }
         if (nodes.size() == 1) {
@@ -82,12 +95,11 @@ public class Path {
         }
 
         List<Arc> arcs = new ArrayList<>();
+        Arc shortestArc = null;
+        double shortestValue = Double.MAX_VALUE;
 
         // Parcourir les nœuds pour trouver les arcs les plus courts
         for (int i = 0; i < nodes.size() - 1; i++) {
-
-            Arc shortestArc = null;
-            double shortestValue = Double.MAX_VALUE;
 
             // Parcourir les successeurs du nœud actuel
             for (Arc arc : nodes.get(i).getSuccessors()) {
@@ -109,6 +121,8 @@ public class Path {
 
             // Ajouter l'arc le plus court à la liste des arcs
             arcs.add(shortestArc);
+            shortestArc = null;
+            shortestValue = Double.MAX_VALUE;
         }
 
         // Retourner le chemin construit
@@ -188,7 +202,7 @@ public class Path {
     public Path(Graph graph, List<Arc> arcs) {
         this.graph = graph;
         this.arcs = arcs;
-        this.origin = arcs.size() > 0 ? arcs.get(0).getOrigin() : null;
+        this.origin = !arcs.isEmpty() ? arcs.get(0).getOrigin() : null;
     }
 
     /**
@@ -267,8 +281,9 @@ public class Path {
         // second
         // le -1 permet de ne pas vérifier le dernier noeud du graphe
         for (int i = 0; i < arcs.size() - 1; ++i) {
-            if (!arcs.get(i).getDestination().equals(arcs.get(i + 1).getOrigin()))
+            if (!arcs.get(i).getDestination().equals(arcs.get(i + 1).getOrigin())) {
                 return false;
+            }
         }
         return true;
     }
