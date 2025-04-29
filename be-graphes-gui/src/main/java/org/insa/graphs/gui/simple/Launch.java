@@ -49,7 +49,7 @@ public class Launch {
         final String mapName =
                 "C:/Users/zeyda/Desktop/BEGraphe2025/Assets/insa.mapgr";
         final String pathName =
-                "C:/Users/zeyda/Desktop/BEGraphe2025/Assets/path_fr_insa_tour.path";
+                "C:/Users/zeyda/Desktop/BEGraphe2025/Assets/path_fr31insa_rangueil_r2.path";
 
         final Graph graph;
         final Path path;
@@ -70,7 +70,7 @@ public class Launch {
 
         // TODO: create a path reader
         try (final PathReader pathReader = new BinaryPathReader(new DataInputStream(
-                new BufferedInputStream(new FileInputStream(mapName))))) {
+                new BufferedInputStream(new FileInputStream(pathName))))) {
 
             // TODO: read the path
             path = pathReader.readPath(graph);
