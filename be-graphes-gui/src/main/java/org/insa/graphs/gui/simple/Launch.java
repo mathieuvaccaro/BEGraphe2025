@@ -47,7 +47,7 @@ public class Launch {
 
         // visit these directory to see the list of available files on commetud.
         final String mapName =
-                "C:/Users/zeyda/Desktop/BEGraphe2025/Assets/insa.mapgr";
+                "C:/Users/zeyda/Desktop/BEGraphe2025/Assets/midi-pyrenees.mapgr";
         final String pathName =
                 "C:/Users/zeyda/Desktop/BEGraphe2025/Assets/path_fr31insa_rangueil_r2.path";
 
