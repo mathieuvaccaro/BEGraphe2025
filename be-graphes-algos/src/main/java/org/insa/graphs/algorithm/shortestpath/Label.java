@@ -7,7 +7,7 @@ public class Label implements Comparable<Label> {
     private Node sommet_courant;
     private boolean marque;
     private double cout_realise;
-    private Node pere;
+    private Label pere;
 
     public Node getSommet_courant() {
         return sommet_courant;
@@ -26,11 +26,11 @@ public class Label implements Comparable<Label> {
         return cout_realise;
     }
 
-    public Node getPere() {
+    public Label getPere() {
         return pere;
     }
 
-    public void setPere(Node pere) {
+    public void setPere(Label pere) {
         this.pere = pere;
     }
 
@@ -44,7 +44,7 @@ public class Label implements Comparable<Label> {
         this.cout_realise = cost;
     }
 
-    public Label(Node sommet_courant, boolean marque, double cout_realise, Node pere)
+    public Label(Node sommet_courant, boolean marque, double cout_realise, Label pere)
     {
         this.sommet_courant = sommet_courant;
         this.marque = marque;

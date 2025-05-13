@@ -25,14 +25,13 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         // variable that will contain the solution of the shortest path problem
         ShortestPathSolution solution = null;
 
-        // TODO: implement the Dijkstra algorithm
         Graph graph = data.getGraph();
         final int nbNodes = graph.size();
 
 
         // On va passer par un tas pour que ce soit plus efficace. De toute manière en haut il y aura déjà le minimum
         BinaryHeap<Label> tas = new BinaryHeap<Label>();
-        ArrayList<Label> arrayLabel = new arrayList<Label>();
+        ArrayList<Label> arrayLabel = new ArrayList<Label>();
         // Remplissons le tas
         for (int i = 0; i < nbNodes; i++) {
             Label label = new Label(graph.getNodes().get(i), false, Double.POSITIVE_INFINITY, null);
@@ -40,6 +39,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         }
         arrayLabel.get(0).setCost(0);
         tas.insert(arrayLabel.get(0));
+
+        // x = sommet min
+        // y = tous les successeurs de cesoemmt min
 
         for (int i = 1; i < nbNodes; i++) {
             Label sommetMin = tas.deleteMin();
@@ -49,17 +51,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 Label sommetSucc = arrayLabel.get(succArc.getDestination().getId());
                 if(!sommetSucc.getMarque())
                 {
-                    sommetSucc.setCost(min(sommetSucc.getCost()), sommetMin.getCost());
-                    if()
+                    sommetSucc.setCost(Double.min(sommetSucc.getCost(), sommetMin.getCost()));
+                    if(sommetMin.getCost() < sommetSucc.getCost()) // Mis a jour <=> sommetMin.getCost() < sommetSucc.getCost()
+                    {
+                        tas.insert(sommetSucc);
+                        sommetMin = sommetSucc.getPere();
+                    }
                 }
             }
-        }
-
-
-        // marque quand retirer du tas
-        // Boucle principale : Tant que c'est pas vide ou que c'est pas optimal
-        for (int i = 0; i < nbNodes; i++) { // OU OPTIMAL !!
-
         }
 
         // when the algorithm terminates, return the solution that has been found
