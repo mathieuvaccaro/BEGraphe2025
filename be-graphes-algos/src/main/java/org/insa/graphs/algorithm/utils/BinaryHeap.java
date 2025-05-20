@@ -138,13 +138,13 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
         if (index == -1 || index >= this.currentSize) {
             throw new ElementNotFoundException(x);
         }
-        E lastItem = this.array.get(this.currentSize-1);
+        E lastItem = this.array.get(this.currentSize - 1);
         this.arraySet(index, lastItem);
         this.currentSize--;
         this.percolateDown(index);
         if (this.currentSize > 0) {
             this.percolateUp(index);
-        } 
+        }
     }
 
     @Override

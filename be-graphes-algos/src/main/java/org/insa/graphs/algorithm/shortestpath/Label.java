@@ -34,26 +34,26 @@ public class Label implements Comparable<Label> {
     public void setPere(Arc pere) {
         this.pere = pere;
 
-        
-    
+
     }
 
-    public double getCost()
-    {
+    public double getCost() {
         return cout_realise;
     }
 
-    public void setCost(double cost)
-    {
+    public void setCost(double cost) {
         this.cout_realise = cost;
     }
 
-    public Label(Node sommet_courant, boolean marque, double cout_realise, Arc pere)
-    {
+    public Label(Node sommet_courant, boolean marque, double cout_realise, Arc pere) {
         this.sommet_courant = sommet_courant;
         this.marque = marque;
         this.cout_realise = cout_realise;
         this.pere = pere;
+    }
+
+    public double getTotalCost() {
+        return getCout_realise() + getCost();
     }
 
     @Override
@@ -62,8 +62,11 @@ public class Label implements Comparable<Label> {
         // Cout > Autre --> 1
         // Cout = AUtre --> 0
 
-        if(this.getCost() < autre.getCost()) return -1;
-        else if(this.getCost() > autre.getCost()) return 1;
+        if (this.getCost() < autre.getCost())
+            return -1;
+        else if (this.getCost() > autre.getCost())
+            return 1;
         return 0;
+
     }
 }
