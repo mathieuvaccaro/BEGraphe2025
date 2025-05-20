@@ -8,7 +8,7 @@ import org.insa.graphs.algorithm.utils.BinaryHeap;
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Graph;
 import org.insa.graphs.model.Path;
-
+import org.insa.graphs.model.Node;
 public class AStarAlgorithm extends DijkstraAlgorithm {
 
     public AStarAlgorithm(ShortestPathData data) {
@@ -34,11 +34,15 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         BinaryHeap<Label> tas = new BinaryHeap<Label>();
         ArrayList<LabelStar> arrayLabelStar = new ArrayList<LabelStar>();
 
-        // On va remplir la liste de LabelStar (avec des valeurs par défauts)
+       
+        Node destination = data.getDestination();
+        // On va initialiser les distances avec leurs distances à vol d'oiseau pour se conformer
+        // au astar qui a un cout estime sur le trajet à vol d'oiseau "cuicui" entre 2 sommets
         for (int i = 0; i < nbNodes; i++) {
-            LabelStar LabelStar = new LabelStar(graph.getNodes().get(i), false,
-                    Double.POSITIVE_INFINITY, null, Double.POSITIVE_INFINITY);
-            arrayLabelStar.add(LabelStar);
+            Node node = graph.getNodes().get(i);
+            double coutEstime = node.getPoint().distanceTo(destination.getPoint()); // cout estime entre les 2 sommets 
+            LabelStar labelStar = new LabelStar(node, false, Double.POSITIVE_INFINITY, null, coutEstime); // on met dans notre liste mais avec cout estime au lieu de l'infini avec dijkstra
+            arrayLabelStar.add(labelStar);
         }
 
         // On va juste définir le point d'origine de la liste
