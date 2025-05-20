@@ -25,17 +25,34 @@ public class LabelStar extends Label {
 
     @Override
     public int compareTo(Label autre) {
-        // Cout < Autre --> -1
+     double thisTotal = this.getTotalCost();
+    double otherTotal = autre.getTotalCost();
+
+     // Cout < Autre --> -1
         // Cout > Autre --> 1
-        // Cout = Autre --> 0
+       
 
-        if (this.getTotalCost() < autre.getTotalCost())
+        if (thisTotal < otherTotal) {
             return -1;
-        else if (this.getTotalCost() > autre.getTotalCost())
+        }
+        else if (thisTotal > otherTotal) {
             return 1;
-        return 0;
+        }
+        else {
+            // Egalite --> on compare le coût estimé à la destination  ;)
+            double thisEstime = this.cout_estime;
+            double otherEstime = ((LabelStar) autre).cout_estime;
 
+            if (thisEstime < otherEstime) { // la on va comparer avec les cout estime :o
+                return -1;
+            }
+            else if (thisEstime > otherEstime) {
+                return 1;
+            }
+            else {
+                return 0;
+            
+            }
+        }
     }
-
-
 }

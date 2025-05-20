@@ -46,7 +46,8 @@ public class Launch {
     public static void main(String[] args) throws Exception {
 
         // visit these directory to see the list of available files on commetud.
-        final String mapName = "/Users/mathieu/Desktop/INSA/3A/S2/Graphes/MINE/Assets/carre.mapgr";
+        final String mapName =
+                "/Users/mathieu/Desktop/INSA/3A/S2/Graphes/MINE/Assets/carre.mapgr";
         final String pathName = "Assets/path_fr31insa_rangueil_r2.path";
 
         final Graph graph;
