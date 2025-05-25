@@ -15,7 +15,10 @@ public class LabelStar extends Label {
 
     // astar efficace reellement que quand nous avons une distance à vol d'oiseau qui ameliore
     // pas tout le temps le cas sur les petits graphs !!! :o
-  
+  @Override
+public double getTotalCost() {
+    return getCost() + this.cout_estime;
+}
 
     @Override
     public int compareTo(Label autre) {

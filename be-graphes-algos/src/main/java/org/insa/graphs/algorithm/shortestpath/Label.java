@@ -53,7 +53,7 @@ public class Label implements Comparable<Label> {
     }
 
     public double getTotalCost() {
-        return getCout_realise() + getCost();
+        return  getCost();
     }
 
     @Override
