@@ -7,8 +7,8 @@ import org.insa.graphs.algorithm.AbstractSolution.Status;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Graph;
-import org.insa.graphs.model.Path;
 import org.insa.graphs.model.Node;
+import org.insa.graphs.model.Path;
 public class AStarAlgorithm extends DijkstraAlgorithm {
 
     public AStarAlgorithm(ShortestPathData data) {
@@ -78,6 +78,9 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
             Label sommetMin = tas.deleteMin();
             sommetMin.setMarque(true);
 
+            // Notifie qu'un sommet a été marqué (finalisé)
+            notifyNodeMarked(sommetMin.getSommet_courant());
+
             // Il ne reste plus qu'à regarder tous les sommets enfant du sommet le plus
             // proche
             for (Arc succArc : sommetMin.getSommet_courant().getSuccessors()) {
@@ -107,6 +110,9 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
                         arrayLabelStar.set(sommetSucc.getSommet_courant().getId(),
                                 sommetSucc); // Sans oublier de mettre a jour les
                                              // informations égalament dans la liste !
+
+                        // Notifie qu'un sommet a été atteint pour la première fois
+                        notifyNodeReached(sommetSucc.getSommet_courant());
                     }
                 }
             }
@@ -115,6 +121,8 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
             if (sommetMin.getSommet_courant().getId() == data.getDestination()
                     .getId()) {
                 destIsMarqued = true;
+                // Notifie que la destination a été atteinte
+                notifyDestinationReached(sommetMin.getSommet_courant());
                 break;
             }
         }
