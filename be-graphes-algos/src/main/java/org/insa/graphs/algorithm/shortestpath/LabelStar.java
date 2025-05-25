@@ -19,9 +19,9 @@ public class LabelStar extends Label {
     public double getTotalCost() {
         return getCost() + this.cout_estime;
     }
-
+ 
     @Override
-    public int compareTo(Label autre) {
+    public int compareTo(Label autre) { // comment on va trier notre tas grosso modo
      double thisTotal = this.getTotalCost();
     double otherTotal = autre.getTotalCost();
 
