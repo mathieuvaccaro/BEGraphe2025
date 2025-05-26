@@ -76,7 +76,6 @@ public class Launch {
         }
 
         // TODO: draw the path on the drawing
-
         drawing.drawPath(path);
 
 
